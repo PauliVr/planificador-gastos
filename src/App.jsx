@@ -15,9 +15,11 @@ function App() {
         setIsValidPresupuesto={setIsValidPresupuesto}
       />
 
-      <div className='nuevo-gasto'>
-        <img src={IconoNuevoGasto} alt='Icono agregar gasto' />
-      </div>
+      {isValidPresupuesto && (
+        <div className='nuevo-gasto'>
+          <img src={IconoNuevoGasto} alt='Icono agregar gasto' />
+        </div>
+      )}
     </div>
   );
 }
