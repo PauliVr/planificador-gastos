@@ -37,14 +37,26 @@ function App() {
   };
 
   const guardarGasto = (gasto) => {
-    gasto.id = generarId();
-    gasto.fecha = Date.now();
-    setGastos([...gastos, gasto]);
+    if (gasto.id) {
+      const gastosActualizados = gastos.map((gastoState) =>
+        gastoState.id === gasto.id ? gasto : gastoState
+      );
+      setGastos(gastosActualizados);
+    } else {
+      gasto.id = generarId();
+      gasto.fecha = Date.now();
+      setGastos([...gastos, gasto]);
+    }
+
     setAnimarModal(false);
 
     setTimeout(() => {
       setModal(false);
     }, 500);
+  };
+
+  const eliminarGasto = (id) => {
+    console.log('eliminandio', id);
   };
 
   return (
@@ -60,7 +72,7 @@ function App() {
       {isValidPresupuesto && (
         <>
           <main>
-            <ListadoGastos gastos={gastos} setGastoEditar={setGastoEditar} />
+            <ListadoGastos gastos={gastos} setGastoEditar={setGastoEditar} eliminarGasto={eliminarGasto}/>
           </main>
           <div className='nuevo-gasto'>
             <img src={IconoNuevoGasto} alt='Icono agregar gasto' onClick={handleNuevoGasto} />
