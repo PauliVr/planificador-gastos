@@ -42,6 +42,7 @@ function App() {
         gastoState.id === gasto.id ? gasto : gastoState
       );
       setGastos(gastosActualizados);
+      setGastoEditar({});
     } else {
       gasto.id = generarId();
       gasto.fecha = Date.now();
@@ -56,7 +57,8 @@ function App() {
   };
 
   const eliminarGasto = (id) => {
-    console.log('eliminandio', id);
+    const gastosActualizados = gastos.filter((gasto) => gasto.id !== id);
+    setGastos(gastosActualizados);
   };
 
   return (
@@ -72,7 +74,11 @@ function App() {
       {isValidPresupuesto && (
         <>
           <main>
-            <ListadoGastos gastos={gastos} setGastoEditar={setGastoEditar} eliminarGasto={eliminarGasto}/>
+            <ListadoGastos
+              gastos={gastos}
+              setGastoEditar={setGastoEditar}
+              eliminarGasto={eliminarGasto}
+            />
           </main>
           <div className='nuevo-gasto'>
             <img src={IconoNuevoGasto} alt='Icono agregar gasto' onClick={handleNuevoGasto} />
@@ -87,6 +93,7 @@ function App() {
           setAnimarModal={setAnimarModal}
           guardarGasto={guardarGasto}
           gastoEditar={gastoEditar}
+          setGastoEditar={setGastoEditar}
         />
       )}
     </div>
