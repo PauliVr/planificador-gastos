@@ -6,7 +6,9 @@ import { generarId } from './helpers';
 import IconoNuevoGasto from './img/nuevo-gasto.svg';
 
 function App() {
-  const [gastos, setGastos] = useState([]);
+  const [gastos, setGastos] = useState(
+    localStorage.getItem('gastos') ? JSON.parse(localStorage.getItem('gastos')) : []
+  );
 
   const [presupuesto, setPresupuesto] = useState(Number(localStorage.getItem('presupuesto')) ?? 0);
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false);
@@ -32,6 +34,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('presupuesto', presupuesto);
   }, [presupuesto]);
+
+  //UseEffect para los gastos
+  useEffect(() => {
+    localStorage.setItem('gastos', JSON.stringify(gastos) ?? []);
+  }, [gastos]);
 
   //UseEffect para detectar si hay presupuesto
   useEffect(() => {
