@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Filtros from './components/Filtros';
 import Header from './components/Header';
 import ListadoGastos from './components/ListadoGastos';
 import Modal from './components/Modal';
@@ -20,6 +21,10 @@ function App() {
   //Editar Gastos
   const [gastoEditar, setGastoEditar] = useState({});
 
+  //State filtros
+  const [filtro, setFiltro] = useState('');
+  const [gastosFiltrados, setGastosFiltrados] = useState([]);
+
   useEffect(() => {
     if (Object.keys(gastoEditar).length > 0) {
       setModal(true);
@@ -31,6 +36,8 @@ function App() {
   }, [gastoEditar]);
 
   //UseEffect para local storage
+
+  //UseEffect para el presupuesto
   useEffect(() => {
     localStorage.setItem('presupuesto', presupuesto);
   }, [presupuesto]);
@@ -39,6 +46,15 @@ function App() {
   useEffect(() => {
     localStorage.setItem('gastos', JSON.stringify(gastos) ?? []);
   }, [gastos]);
+
+  //UseEffect para escuchar los filtros
+  useEffect(() => {
+    if (filtro) {
+      //Filtrar gastos por categoría
+      const gastosFiltrados = gastos.filter((gasto) => gasto.categoria === filtro);
+      setGastosFiltrados(gastosFiltrados);
+    }
+  }, [filtro]);
 
   //UseEffect para detectar si hay presupuesto
   useEffect(() => {
@@ -85,6 +101,7 @@ function App() {
     <div className={modal ? 'fijar' : ''}>
       <Header
         gastos={gastos}
+        // setGastos={setGastos}
         presupuesto={presupuesto}
         setPresupuesto={setPresupuesto}
         isValidPresupuesto={isValidPresupuesto}
@@ -94,10 +111,13 @@ function App() {
       {isValidPresupuesto && (
         <>
           <main>
+            <Filtros filtro={filtro} setFiltro={setFiltro} />
             <ListadoGastos
               gastos={gastos}
               setGastoEditar={setGastoEditar}
               eliminarGasto={eliminarGasto}
+              filtro={filtro}
+              gastosFiltrados={gastosFiltrados}
             />
           </main>
           <div className='nuevo-gasto'>
